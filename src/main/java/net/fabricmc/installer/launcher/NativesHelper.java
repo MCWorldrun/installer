@@ -26,7 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import net.fabricmc.installer.util.OperatingSystem;
+import tv.banko.gamersedition.installer.util.OperatingSystem;
 
 public class NativesHelper {
 	private static final String OS_ID = OperatingSystem.CURRENT.name().toLowerCase(Locale.ROOT) + "-" + System.getProperty("os.arch").toLowerCase(Locale.ROOT);

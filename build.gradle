@@ -1,16 +1,14 @@
 plugins {
 	id 'java'
 	id 'maven-publish'
-	id "checkstyle"
 	id "com.github.johnrengelman.shadow" version "7.0.0"
-	id "org.cadixdev.licenser" version "0.6.1"
 	id "de.undercouch.download" version "4.1.2"
 	id "me.modmuss50.remotesign" version "0.1.0"
 }
 
 sourceCompatibility = 1.8
 version = '1.0.0'
-archivesBaseName = "fabric-installer"
+archivesBaseName = "installer"
 
 def ENV = System.getenv()
 version = version + (ENV.GITHUB_ACTIONS ? "" : "+local")
@@ -47,40 +45,17 @@ tasks.withType(JavaCompile).configureEach {
 	}
 }
 
-checkstyle {
-	configFile = project.file("checkstyle.xml")
-	toolVersion = "8.45"
-}
-
 shadowJar {
 	manifest {
-		attributes 'Implementation-Title': 'FabricInstaller',
+		attributes 'Implementation-Title': 'GamersEditionInstaller',
 				'Implementation-Version': project.version,
-				'Main-Class': 'net.fabricmc.installer.Main'
+				'Main-Class': 'tv.banko.gamersedition.installer.Main'
 	}
 
 	minimize()
 	archiveClassifier.set(null)
 	exclude('icon.ico')
 }
-
-task serverJar(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
-	manifest {
-		attributes 'Implementation-Title': 'FabricInstaller',
-				'Implementation-Version': project.version,
-				'Main-Class': 'net.fabricmc.installer.ServerLauncher'
-	}
-
-	minimize()
-	exclude('icon.ico')
-	exclude('*.png')
-	exclude('natives/*')
-
-	archiveClassifier = "server"
-	from sourceSets.main.output
-	configurations = [project.configurations.compileClasspath]
-}
-assemble.dependsOn serverJar
 
 def bootstrapVersion = "0.5.1"
 def bootstrapArch = "i686"
@@ -131,11 +106,6 @@ if (ENV.SIGNING_SERVER) {
 	nativeExe.dependsOn signShadowJar
 }
 
-license {
-	header rootProject.file("HEADER")
-	include "**/*.java"
-}
-
 publishing {
 	publications {
 		maven(MavenPublication) {
@@ -154,11 +124,6 @@ publishing {
 			}
 
 			artifact nativeExe.output
-
-			// No point in signing as it is designed to get modified
-			artifact (serverJar) {
-				classifier "server"
-			}
 		}
 	}
 	repositories {
