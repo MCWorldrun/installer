@@ -19,7 +19,7 @@ package net.fabricmc.installer.test;
 import org.junit.Assert;
 import org.junit.Test;
 
-import net.fabricmc.installer.util.ArgumentParser;
+import tv.banko.gamersedition.installer.util.ArgumentParser;
 
 public class ArgumentTests {
 	@Test

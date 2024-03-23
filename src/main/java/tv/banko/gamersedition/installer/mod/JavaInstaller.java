@@ -1,0 +1,104 @@
+/*
+ * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package tv.banko.gamersedition.installer.mod;
+
+import tv.banko.gamersedition.installer.util.Utils;
+
+public class JavaInstaller {
+
+	public static boolean INSTALLED = false;
+
+	public static String install() throws JavaInstallationException {
+		INSTALLED = false;
+		System.out.println("Installing Java 17...");
+
+		String osName = System.getProperty("os.name").toLowerCase();
+
+		if (hasJava17OrHigher()) {
+			return "java.success.already-installed";
+		}
+
+		if (osName.contains("win")) {
+			return installJavaWindows();
+		}
+
+		if (osName.contains("mac")) {
+			return installJavaMacOS();
+		}
+
+		if (osName.contains("nux") || osName.contains("nix") || osName.contains("aix")) {
+			return installJavaLinux();
+		}
+
+		throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.unsupported"));
+	}
+
+	private static boolean hasJava17OrHigher() {
+		String version = System.getProperty("java.version");
+		if (version.startsWith("1.")) {
+			version = version.substring(2, 3);
+		} else {
+			int dot = version.indexOf(".");
+			if (dot != -1) {
+				version = version.substring(0, dot);
+			}
+		}
+
+		System.out.println("Found Java Version " + version);
+		return Integer.parseInt(version) >= 17;
+	}
+
+	private static String installJavaWindows() throws JavaInstallationException {
+		System.out.println("Installing Java 17 on Windows...");
+		String command = "powershell.exe Start-Process -FilePath \"powershell\" -ArgumentList \"<download and install command>\" -Verb RunAs";
+		return runSystemCommand(command);
+	}
+
+	private static String installJavaMacOS() throws JavaInstallationException {
+		System.out.println("Installing Java 17 on macOS...");
+		String command = "/bin/bash -c \"brew install openjdk@17\"";
+		return runSystemCommand(command);
+	}
+
+	private static String installJavaLinux() throws JavaInstallationException {
+		System.out.println("Installing Java 17 on Linux...");
+		String command = "/bin/bash -c \"sudo apt-get update && sudo apt-get install openjdk-17-jdk\"";
+		return runSystemCommand(command);
+	}
+
+	private static String runSystemCommand(String command) throws JavaInstallationException {
+		try {
+			Process process = Runtime.getRuntime().exec(command);
+			process.waitFor();
+			if (process.exitValue() == 0) {
+				INSTALLED = true;
+				return "java.success.installed";
+			}
+
+			throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.unknown"));
+		} catch (Exception e) {
+			throw new JavaInstallationException(e.getLocalizedMessage());
+		}
+	}
+
+	public static class JavaInstallationException extends RuntimeException {
+		public JavaInstallationException(String message) {
+			super(message);
+		}
+	}
+
+}
