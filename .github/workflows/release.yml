@@ -1,0 +1,26 @@
+name: Create release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release new version'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: Release with Gradle Release Plugin
+        run: ./gradlew release

@@ -4,6 +4,7 @@ plugins {
 	id "com.github.johnrengelman.shadow" version "7.0.0"
 	id "de.undercouch.download" version "4.1.2"
 	id "me.modmuss50.remotesign" version "0.1.0"
+	id 'net.researchgate.release' version '3.0.2'
 }
 
 sourceCompatibility = 1.8
@@ -136,6 +137,25 @@ publishing {
 				}
 			}
 		}
+	}
+}
+
+release {
+	failOnCommitNeeded = true
+	failOnPublishNeeded = true
+	failOnSnapshotDependencies = true
+	failOnUnversionedFiles = true
+	failOnUpdateNeeded = true
+	preTagCommitMessage = '[Gradle Release Plugin] - pre tag commit: '
+	tagCommitMessage = '[Gradle Release Plugin] - creating tag: '
+	newVersionCommitMessage = '[Gradle Release Plugin] - new version commit: '
+	tagTemplate = '${version}'
+	versionPropertyFile = 'gradle.properties'
+	snapshotSuffix = '-SNAPSHOT'
+	buildTasks = []
+
+	git {
+		requireBranch.set('main')
 	}
 }
 
