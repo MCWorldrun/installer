@@ -23,25 +23,32 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import tv.banko.gamersedition.installer.util.Reference;
 import tv.banko.gamersedition.installer.util.Utils;
 
 public class ModInstaller {
 
+	private static String MOD_VERSION = null;
+	private static String MINECRAFT_VERSION = null;
+	private static String LOADER_VERSION = null;
+
 	public static String install(Path mcDir) throws ModInstallationException {
 		Path mods = mcDir.resolve("mods");
 		Path backupMods = mcDir.resolve("mods_" + System.currentTimeMillis());
 
-        try {
-            try (Stream<Path> stream = Files.list(mods)) {
+		try {
+			try (Stream<Path> stream = Files.list(mods)) {
 				if (stream.findAny().isPresent()) {
 					System.out.println("Backing up mods to " + backupMods);
 					Files.move(mods, backupMods, StandardCopyOption.REPLACE_EXISTING);
 				}
-            }
-        } catch (IOException ignored) { }
+			}
+		} catch (IOException ignored) {
+		}
 
-        try {
+		try {
 			Path path = mods.resolve("gamers-edition.jar");
 			System.out.println("Downloading " + Reference.GAMERS_EDITION_DOWNLOAD);
 			Utils.downloadFile(new URL(Reference.GAMERS_EDITION_DOWNLOAD), path);
@@ -53,15 +60,47 @@ public class ModInstaller {
 	}
 
 	public static String getModVersion() {
-		return "0.0.1-ab21bac21";
+		if (MOD_VERSION == null)
+			loadVersions();
+		return MOD_VERSION;
 	}
 
 	public static String getMinecraftVersion() {
-		return "1.20.4";
+		if (MINECRAFT_VERSION == null)
+			loadVersions();
+		return MINECRAFT_VERSION;
 	}
 
 	public static String getLoaderVersion() {
-		return "0.15.3";
+		if (LOADER_VERSION == null)
+			loadVersions();
+		return LOADER_VERSION;
+	}
+
+	private static void loadVersions() {
+		try {
+			String read = Utils.readString(new URL(Reference.GAMERS_EDITION_VERSION));
+
+			JsonObject object = JsonParser.parseString(read).getAsJsonObject();
+
+			if (!object.has("mod_version")) {
+				throw new ModInstallationException("Mod version not found in version.json");
+			}
+
+			if (!object.has("minecraft_version")) {
+				throw new ModInstallationException("Minecraft version not found in version.json");
+			}
+
+			if (!object.has("loader_version")) {
+				throw new ModInstallationException("Loader version not found in version.json");
+			}
+
+			MOD_VERSION = object.get("mod_version").getAsString();
+			MINECRAFT_VERSION = object.get("minecraft_version").getAsString();
+			LOADER_VERSION = object.get("loader_version").getAsString();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static class ModInstallationException extends RuntimeException {

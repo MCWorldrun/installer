@@ -22,7 +22,8 @@ public class Reference {
 	public static final String FABRIC_API_URL = "https://www.curseforge.com/minecraft/mc-mods/fabric-api/";
 	public static final String MINECRAFT_LAUNCHER_MANIFEST = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
 	public static final String EXPERIMENTAL_LAUNCHER_MANIFEST = "https://maven.fabricmc.net/net/minecraft/experimental_versions.json";
-	public static final String GAMERS_EDITION_DOWNLOAD = "https://cdn.discordapp.com/attachments/1032729195505270895/1213474337257168956/resourcepack.zip?ex=6608100b&is=65f59b0b&hm=f9eced1ecb3747bd08e10b950619c5b96aee740abeb57fd895dc98147c98a287&";
+	public static final String GAMERS_EDITION_DOWNLOAD = "https://github.com/MCWorldrun/installer/releases/download/mod/mod.jar";
+	public static final String GAMERS_EDITION_VERSION = "https://github.com/MCWorldrun/installer/releases/download/mod/version.json";
 
 	static final String DEFAULT_META_SERVER = "https://meta.fabricmc.net/";
 	static final String DEFAULT_MAVEN_SERVER = "https://maven.fabricmc.net/";

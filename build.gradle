@@ -36,6 +36,7 @@ dependencies {
 	}
 
 	testImplementation 'junit:junit:4.13.2'
+	implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -149,7 +150,7 @@ release {
 	preTagCommitMessage = '[Gradle Release Plugin] - pre tag commit: '
 	tagCommitMessage = '[Gradle Release Plugin] - creating tag: '
 	newVersionCommitMessage = '[Gradle Release Plugin] - new version commit: '
-	tagTemplate = version
+	tagTemplate = project.version as String
 	snapshotSuffix = '-SNAPSHOT'
 	buildTasks = []
 
