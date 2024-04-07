@@ -1,26 +1,61 @@
-name: Create release
+name: Build and Publish JAR
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_version:
-        description: 'Release new version'
-
-permissions:
-  contents: write
+  push:
+    branches:
+      - production
 
 jobs:
-  release:
-    name: Release
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-      - name: Setup git config
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '1.8'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Create Release Tag
         run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
-      - name: Release with Gradle Release Plugin
-        run: ./gradlew release
+          git_hash=$(git rev-parse --short "$GITHUB_SHA")
+          echo "RELEASE_TAG=$git_hash" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          release_name: Release ${{ env.RELEASE_TAG }}
+          draft: false
+          prerelease: false
+
+      - name: Upload installer.jar to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/libs/installer.jar
+          asset_name: installer.jar
+          asset_content_type: application/java-archive
+
+      - name: Upload installer.exe to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/libs/installer.exe
+          asset_name: installer.exe
+          asset_content_type: application/vnd.microsoft.portable-executable
