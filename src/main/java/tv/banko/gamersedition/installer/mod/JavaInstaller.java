@@ -18,6 +18,13 @@ package tv.banko.gamersedition.installer.mod;
 
 import tv.banko.gamersedition.installer.util.Utils;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+
 public class JavaInstaller {
 
 	public static boolean INSTALLED = false;
@@ -89,7 +96,17 @@ public class JavaInstaller {
 				return "java.success.installed";
 			}
 
-			throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.unknown"));
+			InputStream stream = process.getErrorStream();
+
+			StringBuilder error = new StringBuilder();
+			try (Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+				int c;
+				while ((c = reader.read()) != -1) {
+					error.append((char) c);
+				}
+			}
+
+			throw new JavaInstallationException(String.format(Utils.BUNDLE.getString("java.error.unknown"), process.exitValue(), error));
 		} catch (Exception e) {
 			throw new JavaInstallationException(e.getLocalizedMessage());
 		}
