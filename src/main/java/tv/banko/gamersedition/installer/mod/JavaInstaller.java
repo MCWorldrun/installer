@@ -16,13 +16,12 @@
 
 package tv.banko.gamersedition.installer.mod;
 
+import tv.banko.gamersedition.installer.InstallerGui;
 import tv.banko.gamersedition.installer.util.Utils;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import javax.swing.*;
+
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class JavaInstaller {
@@ -71,14 +70,26 @@ public class JavaInstaller {
 
 	private static String installJavaWindows() throws JavaInstallationException {
 		System.out.println("Installing Java 17 on Windows...");
-		String command = "powershell.exe Start-Process -FilePath \"powershell\" -ArgumentList \"<download and install command>\" -Verb RunAs";
-		return runSystemCommand(command);
-	}
+		String command = "cmd.exe /c curl -o jdk.exe https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.exe";
+		runSystemCommand(command);
+
+        try {
+            Runtime.getRuntime().exec("./jdk.exe", null, new File("./"));
+        } catch (IOException e) {
+			throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.elevation"));
+        }
+		return "java.success.installed";
+    }
 
 	private static String installJavaMacOS() throws JavaInstallationException {
 		System.out.println("Installing Java 17 on macOS...");
-		String command = "/bin/bash -c \"brew install openjdk@17\"";
-		return runSystemCommand(command);
+
+		JOptionPane.showMessageDialog(InstallerGui.instance,
+				null,
+				Utils.BUNDLE.getString("prompt.java.install-manually"),
+				JOptionPane.INFORMATION_MESSAGE);
+
+		return "";
 	}
 
 	private static String installJavaLinux() throws JavaInstallationException {

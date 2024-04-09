@@ -55,7 +55,13 @@ public class ClientInstaller {
 
 		progress.updateProgress(Utils.BUNDLE.getString("java.installing"));
         try {
-            progress.updateProgress(JavaInstaller.install());
+			String message = JavaInstaller.install();
+
+			if (message.isEmpty()) {
+				throw new RuntimeException(new Exception("Java installation failed"));
+			}
+
+			progress.updateProgress(message);
         } catch (JavaInstaller.JavaInstallationException e) {
 			progress.updateProgress(e.getLocalizedMessage());
             throw new RuntimeException(e);
