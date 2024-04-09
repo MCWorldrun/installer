@@ -16,13 +16,19 @@
 
 package tv.banko.gamersedition.installer.mod;
 
-import tv.banko.gamersedition.installer.InstallerGui;
-import tv.banko.gamersedition.installer.util.Utils;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.*;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import tv.banko.gamersedition.installer.Handler;
+import tv.banko.gamersedition.installer.InstallerGui;
+import tv.banko.gamersedition.installer.util.Utils;
 
 public class JavaInstaller {
 
@@ -73,20 +79,28 @@ public class JavaInstaller {
 		String command = "cmd.exe /c curl -o jdk.exe https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.exe";
 		runSystemCommand(command);
 
-        try {
-            Runtime.getRuntime().exec("./jdk.exe", null, new File("./"));
-        } catch (IOException e) {
+		try {
+			Runtime.getRuntime().exec("./jdk.exe", null, new File("./"));
+		} catch (IOException e) {
 			throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.elevation"));
-        }
+		}
 		return "java.success.installed";
-    }
+	}
 
 	private static String installJavaMacOS() throws JavaInstallationException {
 		System.out.println("Installing Java 17 on macOS...");
 
+		String html = String.format("<html><body style=\"%s\">%s</body></html>",
+				Handler.buildEditorPaneStyle(),
+				Utils.BUNDLE.getString("prompt.java.install-manually.body")
+						.replace("\n", "<br>")
+						.replace("\t", "&ensp;"));
+		JEditorPane textPane = new JEditorPane("text/html", html);
+		textPane.setEditable(false);
+
 		JOptionPane.showMessageDialog(InstallerGui.instance,
-				null,
-				Utils.BUNDLE.getString("prompt.java.install-manually"),
+				textPane,
+				Utils.BUNDLE.getString("prompt.java.install-manually.title"),
 				JOptionPane.INFORMATION_MESSAGE);
 
 		return "";

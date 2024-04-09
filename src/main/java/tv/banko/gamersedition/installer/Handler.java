@@ -101,7 +101,7 @@ public abstract class Handler implements InstallerProgress {
 		statusLabel.setForeground(UIManager.getColor("Label.foreground"));
 	}
 
-	protected String buildEditorPaneStyle() {
+	public static String buildEditorPaneStyle() {
 		JLabel label = new JLabel();
 		Font font = label.getFont();
 		Color color = label.getBackground();
