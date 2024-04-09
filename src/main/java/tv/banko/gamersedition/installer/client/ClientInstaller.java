@@ -23,6 +23,8 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 
 import mjson.Json;
+import tv.banko.gamersedition.installer.Handler;
+import tv.banko.gamersedition.installer.InstallerGui;
 import tv.banko.gamersedition.installer.LoaderVersion;
 import tv.banko.gamersedition.installer.mod.JavaInstaller;
 import tv.banko.gamersedition.installer.mod.ModInstaller;
@@ -31,6 +33,8 @@ import tv.banko.gamersedition.installer.util.InstallerProgress;
 import tv.banko.gamersedition.installer.util.Library;
 import tv.banko.gamersedition.installer.util.Reference;
 import tv.banko.gamersedition.installer.util.Utils;
+
+import javax.swing.*;
 
 public class ClientInstaller {
 
@@ -54,18 +58,13 @@ public class ClientInstaller {
 		Files.write(profileJson, json.toString().getBytes(StandardCharsets.UTF_8));
 
 		progress.updateProgress(Utils.BUNDLE.getString("java.installing"));
-        try {
+		try {
 			String message = JavaInstaller.install();
-
-			if (message.isEmpty()) {
-				throw new RuntimeException(new Exception("Java installation failed"));
-			}
-
 			progress.updateProgress(message);
-        } catch (JavaInstaller.JavaInstallationException e) {
+		} catch (JavaInstaller.JavaInstallationException e) {
 			progress.updateProgress(e.getLocalizedMessage());
-            throw new RuntimeException(e);
-        }
+			throw new RuntimeException(e);
+		}
 
 		progress.updateProgress(String.format(Utils.BUNDLE.getString("mod.installing"), ModInstaller.getModVersion()));
 		try {

@@ -16,12 +16,14 @@
 
 package tv.banko.gamersedition.installer.mod;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 import javax.swing.*;
@@ -35,28 +37,43 @@ public class JavaInstaller {
 	public static boolean INSTALLED = false;
 
 	public static String install() throws JavaInstallationException {
-		INSTALLED = false;
-		System.out.println("Installing Java 17...");
+		try {
+			INSTALLED = false;
+			System.out.println("Installing Java 17...");
 
-		String osName = System.getProperty("os.name").toLowerCase();
+			String osName = System.getProperty("os.name").toLowerCase();
 
-		if (hasJava17OrHigher()) {
-			return "java.success.already-installed";
+			if (hasJava17OrHigher()) {
+				return "java.success.already-installed";
+			}
+
+			if (osName.contains("win")) {
+				return installJavaWindows();
+			}
+
+			if (osName.contains("nux") || osName.contains("nix") || osName.contains("aix")) {
+				return installJavaLinux();
+			}
+
+			throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.unsupported"));
+		} catch (JavaInstallationException e) {
+			String html = String.format("<html><body style=\"%s\">%s</body></html>",
+					Handler.buildEditorPaneStyle(),
+					Utils.BUNDLE.getString("prompt.java.install-manually.body")
+							.replace("\n", "<br>")
+							.replace("\t", "&ensp;"));
+			JEditorPane textPane = new JEditorPane("text/html", html);
+			textPane.setEditable(false);
+
+			JOptionPane.showMessageDialog(InstallerGui.instance,
+					textPane,
+					Utils.BUNDLE.getString("prompt.java.install-manually.title"),
+					JOptionPane.QUESTION_MESSAGE);
+
+			openWebpage();
+
+			throw new RuntimeException(e);
 		}
-
-		if (osName.contains("win")) {
-			return installJavaWindows();
-		}
-
-		if (osName.contains("mac")) {
-			return installJavaMacOS();
-		}
-
-		if (osName.contains("nux") || osName.contains("nix") || osName.contains("aix")) {
-			return installJavaLinux();
-		}
-
-		throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.unsupported"));
 	}
 
 	private static boolean hasJava17OrHigher() {
@@ -85,25 +102,6 @@ public class JavaInstaller {
 			throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.elevation"));
 		}
 		return "java.success.installed";
-	}
-
-	private static String installJavaMacOS() throws JavaInstallationException {
-		System.out.println("Installing Java 17 on macOS...");
-
-		String html = String.format("<html><body style=\"%s\">%s</body></html>",
-				Handler.buildEditorPaneStyle(),
-				Utils.BUNDLE.getString("prompt.java.install-manually.body")
-						.replace("\n", "<br>")
-						.replace("\t", "&ensp;"));
-		JEditorPane textPane = new JEditorPane("text/html", html);
-		textPane.setEditable(false);
-
-		JOptionPane.showMessageDialog(InstallerGui.instance,
-				textPane,
-				Utils.BUNDLE.getString("prompt.java.install-manually.title"),
-				JOptionPane.INFORMATION_MESSAGE);
-
-		return "";
 	}
 
 	private static String installJavaLinux() throws JavaInstallationException {
@@ -135,6 +133,19 @@ public class JavaInstaller {
 		} catch (Exception e) {
 			throw new JavaInstallationException(e.getLocalizedMessage());
 		}
+	}
+
+	private static boolean openWebpage() {
+		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+			try {
+				desktop.browse(URI.create("https://www.oracle.com/java/technologies/downloads/#java17"));
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 	public static class JavaInstallationException extends RuntimeException {
