@@ -74,7 +74,7 @@ public class ClientHandler extends Handler {
 				}
 
 				final ProfileInstaller profileInstaller = new ProfileInstaller(mcPath);
-				ProfileInstaller.LauncherType launcherType = null;
+				ProfileInstaller.LauncherType launcherType;
 
 				List<ProfileInstaller.LauncherType> types = profileInstaller.getInstalledLauncherTypes();
 

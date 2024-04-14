@@ -51,27 +51,17 @@ public class JavaInstaller {
 				return installJavaWindows();
 			}
 
+			if (osName.contains("mac")) {
+				return installJavaMacOS();
+			}
+
 			if (osName.contains("nux") || osName.contains("nix") || osName.contains("aix")) {
 				return installJavaLinux();
 			}
 
 			throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.unsupported"));
 		} catch (JavaInstallationException e) {
-			String html = String.format("<html><body style=\"%s\">%s</body></html>",
-					Handler.buildEditorPaneStyle(),
-					Utils.BUNDLE.getString("prompt.java.install-manually.body")
-							.replace("\n", "<br>")
-							.replace("\t", "&ensp;"));
-			JEditorPane textPane = new JEditorPane("text/html", html);
-			textPane.setEditable(false);
-
-			JOptionPane.showMessageDialog(InstallerGui.instance,
-					textPane,
-					Utils.BUNDLE.getString("prompt.java.install-manually.title"),
-					JOptionPane.QUESTION_MESSAGE);
-
 			openWebpage();
-
 			throw new RuntimeException(e);
 		}
 	}
@@ -93,15 +83,43 @@ public class JavaInstaller {
 
 	private static String installJavaWindows() throws JavaInstallationException {
 		System.out.println("Installing Java 17 on Windows...");
-		String command = "cmd.exe /c curl -o jdk.exe https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.exe";
+
+		String name = "jdk.exe";
+
+		String command = "cmd.exe /c curl -o " + name + " https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.exe";
 		runSystemCommand(command);
 
 		try {
-			Runtime.getRuntime().exec("./jdk.exe", null, new File("./"));
+			Runtime.getRuntime().exec("./" + name, null, new File("./"));
 		} catch (IOException e) {
-			throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.elevation"));
+			openInstallJDKPrompt(name);
+			throw new RuntimeException(Utils.BUNDLE.getString("prompt.follow-steps"));
 		}
 		return "java.success.installed";
+	}
+
+	private static String installJavaMacOS() throws JavaInstallationException {
+		System.out.println("Installing Java 17 on macOS...");
+
+		String url;
+
+		switch (System.getProperty("os.arch")) {
+			case "x86_64":
+				url = "https://download.oracle.com/java/17/latest/jdk-17_macos-x64_bin.dmg";
+				break;
+			case "aarch64":
+				url = "https://download.oracle.com/java/17/latest/jdk-17_macos-aarch64_bin.dmg";
+				break;
+			default:
+				throw new JavaInstallationException(Utils.BUNDLE.getString("java.error.unknown-arch"));
+		}
+
+		String name = "jdk.dmg";
+		String command = "/bin/bash -c \"curl -o " + name + " " + url + "\"";
+		runSystemCommand(command);
+
+		openInstallJDKPrompt(name);
+		throw new RuntimeException(Utils.BUNDLE.getString("prompt.follow-steps"));
 	}
 
 	private static String installJavaLinux() throws JavaInstallationException {
@@ -135,7 +153,35 @@ public class JavaInstaller {
 		}
 	}
 
+	private static void openInstallJDKPrompt(String name) {
+		String html = String.format("<html><body style=\"%s\">%s</body></html>",
+				Handler.buildEditorPaneStyle(),
+				String.format(Utils.BUNDLE.getString("prompt.java.execute-file.body"), name)
+						.replace("\n", "<br>")
+						.replace("\t", "&ensp;"));
+		JEditorPane textPane = new JEditorPane("text/html", html);
+		textPane.setEditable(false);
+
+		JOptionPane.showMessageDialog(InstallerGui.instance,
+				textPane,
+				Utils.BUNDLE.getString("prompt.java.execute-file.title"),
+				JOptionPane.QUESTION_MESSAGE);
+	}
+
 	private static boolean openWebpage() {
+		String html = String.format("<html><body style=\"%s\">%s</body></html>",
+				Handler.buildEditorPaneStyle(),
+				Utils.BUNDLE.getString("prompt.java.install-manually.body")
+						.replace("\n", "<br>")
+						.replace("\t", "&ensp;"));
+		JEditorPane textPane = new JEditorPane("text/html", html);
+		textPane.setEditable(false);
+
+		JOptionPane.showMessageDialog(InstallerGui.instance,
+				textPane,
+				Utils.BUNDLE.getString("prompt.java.install-manually.title"),
+				JOptionPane.QUESTION_MESSAGE);
+
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
 			try {
