@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import mjson.Json;
 
+import tv.banko.gamersedition.installer.mod.ModInstaller;
 import tv.banko.gamersedition.installer.util.Reference;
 import tv.banko.gamersedition.installer.util.Utils;
 
@@ -66,10 +67,12 @@ public class ProfileInstaller {
 		Json profile = profiles.at(profileName);
 
 		if (profile == null) {
-			profile = createProfile(profileName);
+			profile = createProfile();
 			profiles.set(profileName, profile);
 		}
 
+		profile.set("name", String.format(Reference.PROFILE_NAME, ModInstaller.getModVersion()));
+		profile.set("icon", Utils.getProfileIcon());
 		profile.set("lastVersionId", name);
 
 		Utils.writeToFile(launcherProfiles, jsonObject.toString());
@@ -78,13 +81,11 @@ public class ProfileInstaller {
 		Files.createDirectories(mcDir.resolve("mods"));
 	}
 
-	private static Json createProfile(String name) {
+	private static Json createProfile() {
 		Json jsonObject = Json.object();
-		jsonObject.set("name", name);
 		jsonObject.set("type", "custom");
 		jsonObject.set("created", Utils.ISO_8601.format(new Date()));
 		jsonObject.set("lastUsed", Utils.ISO_8601.format(new Date()));
-		jsonObject.set("icon", Utils.getProfileIcon());
 		return jsonObject;
 	}
 

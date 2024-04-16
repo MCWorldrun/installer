@@ -16,6 +16,8 @@
 
 package tv.banko.gamersedition.installer.util;
 
+import mjson.Json;
+
 public class Reference {
 	public static final String LOADER_NAME = "fabric-loader";
 
@@ -24,6 +26,7 @@ public class Reference {
 	public static final String EXPERIMENTAL_LAUNCHER_MANIFEST = "https://maven.fabricmc.net/net/minecraft/experimental_versions.json";
 	public static final String GAMERS_EDITION_DOWNLOAD = "https://github.com/MCWorldrun/public/releases/latest/download/mod.jar";
 	public static final String GAMERS_EDITION_VERSION = "https://github.com/MCWorldrun/public/releases/latest/download/version.json";
+	public static final String PROFILE_NAME = "MCWorldrun %s";
 
 	static final String DEFAULT_META_SERVER = "https://meta.fabricmc.net/";
 	static final String DEFAULT_MAVEN_SERVER = "https://maven.fabricmc.net/";

@@ -49,7 +49,6 @@ public class ClientInstaller {
 
 		Path profileJar = profileDir.resolve(profileName + ".jar");
 		Files.deleteIfExists(profileJar);
-		profileJar.toFile().createNewFile();
 
 		Json json = FabricService.queryMetaJson(String.format("v2/versions/loader/%s/%s/profile/json", gameVersion, loaderVersion.name));
 		Files.write(profileJson, json.toString().getBytes(StandardCharsets.UTF_8));
