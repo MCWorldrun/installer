@@ -17,7 +17,7 @@
 package tv.banko.gamersedition.installer.util;
 
 public class Reference {
-	public static final String LOADER_NAME = "wflwr-gamers-edition";
+	public static final String LOADER_NAME = "fabric-loader";
 
 	public static final String FABRIC_API_DOWNLOAD = "https://cdn.modrinth.com/data/P7dR8mSH/versions/xklQBMta/fabric-api-0.97.0%2B1.20.4.jar";
 	public static final String MINECRAFT_LAUNCHER_MANIFEST = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
