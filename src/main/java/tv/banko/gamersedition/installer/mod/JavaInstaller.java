@@ -30,13 +30,14 @@ import javax.swing.*;
 
 import tv.banko.gamersedition.installer.Handler;
 import tv.banko.gamersedition.installer.InstallerGui;
+import tv.banko.gamersedition.installer.util.InstallerProgress;
 import tv.banko.gamersedition.installer.util.Utils;
 
 public class JavaInstaller {
 
 	public static boolean INSTALLED = false;
 
-	public static String install() throws JavaInstallationException {
+	public static String install(InstallerProgress progress) throws JavaInstallationException {
 		try {
 			INSTALLED = false;
 			System.out.println("Installing Java 17...");
@@ -48,14 +49,17 @@ public class JavaInstaller {
 			}
 
 			if (osName.contains("win")) {
-				return installJavaWindows();
+				progress.updateProgress(Utils.BUNDLE.getString("java.downloading"));
+				return installJavaWindows(progress);
 			}
 
 			if (osName.contains("mac")) {
+				progress.updateProgress(Utils.BUNDLE.getString("java.downloading"));
 				return installJavaMacOS();
 			}
 
 			if (osName.contains("nux") || osName.contains("nix") || osName.contains("aix")) {
+				progress.updateProgress(Utils.BUNDLE.getString("java.downloading"));
 				return installJavaLinux();
 			}
 
@@ -81,13 +85,14 @@ public class JavaInstaller {
 		return Integer.parseInt(version) >= 17;
 	}
 
-	private static String installJavaWindows() throws JavaInstallationException {
+	private static String installJavaWindows(InstallerProgress progress) throws JavaInstallationException {
 		System.out.println("Installing Java 17 on Windows...");
 
 		String name = "jdk.exe";
-
 		String command = "cmd.exe /c curl -o " + name + " https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.exe";
 		runSystemCommand(command);
+
+		progress.updateProgress(Utils.BUNDLE.getString("java.installing"));
 
 		try {
 			Runtime.getRuntime().exec("./" + name, null, new File("./"));

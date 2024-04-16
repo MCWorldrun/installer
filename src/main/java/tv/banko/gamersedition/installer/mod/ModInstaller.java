@@ -49,10 +49,14 @@ public class ModInstaller {
 		}
 
 		try {
-			Path path = mods.resolve("gamers-edition.jar");
-			System.out.println("Downloading " + Reference.GAMERS_EDITION_DOWNLOAD);
-			Utils.downloadFile(new URL(Reference.GAMERS_EDITION_DOWNLOAD), path);
-			System.out.println("Downloaded to " + path);
+			Path mod = mods.resolve("gamers-edition.jar");
+			System.out.println("Downloading " + Reference.GAMERS_EDITION_DOWNLOAD + " to " + mod);
+			Utils.downloadFile(new URL(Reference.GAMERS_EDITION_DOWNLOAD), mod);
+
+			Path api = mods.resolve("fabric-api.jar");
+			System.out.println("Downloading " + Reference.FABRIC_API_DOWNLOAD + " to " + api);
+			Utils.downloadFile(new URL(Reference.FABRIC_API_DOWNLOAD), api);
+
 			return String.format(Utils.BUNDLE.getString("mod.success"), getModVersion());
 		} catch (IOException e) {
 			throw new ModInstallationException(Utils.BUNDLE.getString("mod.error.download"));

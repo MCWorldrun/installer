@@ -19,7 +19,7 @@ package tv.banko.gamersedition.installer.util;
 public class Reference {
 	public static final String LOADER_NAME = "wflwr-gamers-edition";
 
-	public static final String FABRIC_API_URL = "https://www.curseforge.com/minecraft/mc-mods/fabric-api/";
+	public static final String FABRIC_API_DOWNLOAD = "https://cdn.modrinth.com/data/P7dR8mSH/versions/xklQBMta/fabric-api-0.97.0%2B1.20.4.jar";
 	public static final String MINECRAFT_LAUNCHER_MANIFEST = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
 	public static final String EXPERIMENTAL_LAUNCHER_MANIFEST = "https://maven.fabricmc.net/net/minecraft/experimental_versions.json";
 	public static final String GAMERS_EDITION_DOWNLOAD = "https://github.com/MCWorldrun/public/releases/latest/download/mod.jar";

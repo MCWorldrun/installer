@@ -23,8 +23,6 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 
 import mjson.Json;
-import tv.banko.gamersedition.installer.Handler;
-import tv.banko.gamersedition.installer.InstallerGui;
 import tv.banko.gamersedition.installer.LoaderVersion;
 import tv.banko.gamersedition.installer.mod.JavaInstaller;
 import tv.banko.gamersedition.installer.mod.ModInstaller;
@@ -33,8 +31,6 @@ import tv.banko.gamersedition.installer.util.InstallerProgress;
 import tv.banko.gamersedition.installer.util.Library;
 import tv.banko.gamersedition.installer.util.Reference;
 import tv.banko.gamersedition.installer.util.Utils;
-
-import javax.swing.*;
 
 public class ClientInstaller {
 
@@ -58,14 +54,14 @@ public class ClientInstaller {
 		Json json = FabricService.queryMetaJson(String.format("v2/versions/loader/%s/%s/profile/json", gameVersion, loaderVersion.name));
 		Files.write(profileJson, json.toString().getBytes(StandardCharsets.UTF_8));
 
-		progress.updateProgress(Utils.BUNDLE.getString("java.installing"));
-		try {
-			String message = JavaInstaller.install();
-			progress.updateProgress(message);
-		} catch (JavaInstaller.JavaInstallationException e) {
-			progress.updateProgress(e.getLocalizedMessage());
-			throw new RuntimeException(e);
-		}
+//		progress.updateProgress(Utils.BUNDLE.getString("java.searching"));
+//		try {
+//			String message = JavaInstaller.install(progress);
+//			progress.updateProgress(message);
+//		} catch (JavaInstaller.JavaInstallationException e) {
+//			progress.updateProgress(e.getLocalizedMessage());
+//			throw new RuntimeException(e);
+//		}
 
 		progress.updateProgress(String.format(Utils.BUNDLE.getString("mod.installing"), ModInstaller.getModVersion()));
 		try {
