@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer;
+package tv.banko.mcworldrun.installer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,11 +23,11 @@ import java.util.List;
 import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 
-import tv.banko.gamersedition.installer.client.ClientHandler;
-import tv.banko.gamersedition.installer.mod.ModInstaller;
-import tv.banko.gamersedition.installer.util.FabricService;
-import tv.banko.gamersedition.installer.util.OperatingSystem;
-import tv.banko.gamersedition.installer.util.ArgumentParser;
+import tv.banko.mcworldrun.installer.client.ClientHandler;
+import tv.banko.mcworldrun.installer.mod.ModInstaller;
+import tv.banko.mcworldrun.installer.util.FabricService;
+import tv.banko.mcworldrun.installer.util.OperatingSystem;
+import tv.banko.mcworldrun.installer.util.ArgumentParser;
 
 public class Main {
 

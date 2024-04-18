@@ -50,7 +50,7 @@ shadowJar {
 	manifest {
 		attributes 'Implementation-Title': 'GamersEditionInstaller',
 				'Implementation-Version': project.version,
-				'Main-Class': 'tv.banko.gamersedition.installer.Main'
+				'Main-Class': 'tv.banko.mcworldrun.installer.Main'
 	}
 
 	minimize()

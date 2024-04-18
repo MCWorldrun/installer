@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer.client;
+package tv.banko.mcworldrun.installer.client;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -23,14 +23,13 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 
 import mjson.Json;
-import tv.banko.gamersedition.installer.LoaderVersion;
-import tv.banko.gamersedition.installer.mod.JavaInstaller;
-import tv.banko.gamersedition.installer.mod.ModInstaller;
-import tv.banko.gamersedition.installer.util.FabricService;
-import tv.banko.gamersedition.installer.util.InstallerProgress;
-import tv.banko.gamersedition.installer.util.Library;
-import tv.banko.gamersedition.installer.util.Reference;
-import tv.banko.gamersedition.installer.util.Utils;
+import tv.banko.mcworldrun.installer.LoaderVersion;
+import tv.banko.mcworldrun.installer.mod.ModInstaller;
+import tv.banko.mcworldrun.installer.util.FabricService;
+import tv.banko.mcworldrun.installer.util.InstallerProgress;
+import tv.banko.mcworldrun.installer.util.Library;
+import tv.banko.mcworldrun.installer.util.Reference;
+import tv.banko.mcworldrun.installer.util.Utils;
 
 public class ClientInstaller {
 

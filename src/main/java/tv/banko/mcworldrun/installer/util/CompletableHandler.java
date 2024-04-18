@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer.util;
+package tv.banko.mcworldrun.installer.util;
 
-public interface InstallerProgress {
-	InstallerProgress CONSOLE = new InstallerProgress() {
-		@Override
-		public void updateProgress(String text) {
-			System.out.println(text);
-		}
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
-		@Override
-		public void error(Throwable throwable) {
-			throw new RuntimeException(throwable);
-		}
-	};
+public class CompletableHandler<T> {
+	private boolean complete;
 
-	void updateProgress(String text);
+	private List<Consumer<T>> completeConsumers = new ArrayList<>();
 
-	void error(Throwable throwable);
+	public void onComplete(Consumer<T> completeConsumer) {
+		completeConsumers.add(completeConsumer);
+	}
+
+	protected void complete(T value) {
+		complete = true;
+		completeConsumers.forEach(listConsumer -> listConsumer.accept(value));
+	}
+
+	public boolean isComplete() {
+		return complete;
+	}
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer.client;
+package tv.banko.mcworldrun.installer.client;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,9 +27,9 @@ import java.util.stream.Collectors;
 
 import mjson.Json;
 
-import tv.banko.gamersedition.installer.mod.ModInstaller;
-import tv.banko.gamersedition.installer.util.Reference;
-import tv.banko.gamersedition.installer.util.Utils;
+import tv.banko.mcworldrun.installer.mod.ModInstaller;
+import tv.banko.mcworldrun.installer.util.Reference;
+import tv.banko.mcworldrun.installer.util.Utils;
 
 public class ProfileInstaller {
 	private final Path mcDir;

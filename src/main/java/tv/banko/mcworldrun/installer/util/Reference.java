@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer.util;
-
-import mjson.Json;
+package tv.banko.mcworldrun.installer.util;
 
 public class Reference {
 	public static final String LOADER_NAME = "fabric-loader";

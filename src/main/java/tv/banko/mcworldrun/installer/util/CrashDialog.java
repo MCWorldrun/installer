@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer.util;
+package tv.banko.mcworldrun.installer.util;
 
 import java.awt.BorderLayout;
 import java.awt.Container;

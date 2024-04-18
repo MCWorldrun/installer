@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer.client;
+package tv.banko.mcworldrun.installer.client;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
@@ -28,15 +28,15 @@ import java.util.Locale;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 
-import tv.banko.gamersedition.installer.Handler;
-import tv.banko.gamersedition.installer.InstallerGui;
-import tv.banko.gamersedition.installer.LoaderVersion;
-import tv.banko.gamersedition.installer.mod.JavaInstaller;
-import tv.banko.gamersedition.installer.mod.ModInstaller;
-import tv.banko.gamersedition.installer.util.ArgumentParser;
-import tv.banko.gamersedition.installer.util.InstallerProgress;
-import tv.banko.gamersedition.installer.util.NoopCaret;
-import tv.banko.gamersedition.installer.util.Utils;
+import tv.banko.mcworldrun.installer.Handler;
+import tv.banko.mcworldrun.installer.InstallerGui;
+import tv.banko.mcworldrun.installer.LoaderVersion;
+import tv.banko.mcworldrun.installer.mod.JavaInstaller;
+import tv.banko.mcworldrun.installer.mod.ModInstaller;
+import tv.banko.mcworldrun.installer.util.ArgumentParser;
+import tv.banko.mcworldrun.installer.util.InstallerProgress;
+import tv.banko.mcworldrun.installer.util.NoopCaret;
+import tv.banko.mcworldrun.installer.util.Utils;
 
 import net.fabricmc.installer.launcher.MojangLauncherHelperWrapper;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer;
+package tv.banko.mcworldrun.installer;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 
-import tv.banko.gamersedition.installer.util.Utils;
+import tv.banko.mcworldrun.installer.util.Utils;
 
 @SuppressWarnings("serial")
 public class InstallerGui extends JFrame {

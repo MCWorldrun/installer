@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer.mod;
+package tv.banko.mcworldrun.installer.mod;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,8 +25,8 @@ import java.util.stream.Stream;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import tv.banko.gamersedition.installer.util.Reference;
-import tv.banko.gamersedition.installer.util.Utils;
+import tv.banko.mcworldrun.installer.util.Reference;
+import tv.banko.mcworldrun.installer.util.Utils;
 
 public class ModInstaller {
 
@@ -49,7 +49,7 @@ public class ModInstaller {
 		}
 
 		try {
-			Path mod = mods.resolve("gamers-edition.jar");
+			Path mod = mods.resolve("mcworldrun.jar");
 			System.out.println("Downloading " + Reference.GAMERS_EDITION_DOWNLOAD + " to " + mod);
 			Utils.downloadFile(new URL(Reference.GAMERS_EDITION_DOWNLOAD), mod);
 

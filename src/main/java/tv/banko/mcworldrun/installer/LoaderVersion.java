@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer;
+package tv.banko.mcworldrun.installer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.util.zip.ZipFile;
 
 import mjson.Json;
 
-import tv.banko.gamersedition.installer.util.Utils;
+import tv.banko.mcworldrun.installer.util.Utils;
 
 public final class LoaderVersion {
 	public final String name;

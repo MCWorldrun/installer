@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer;
+package tv.banko.mcworldrun.installer;
 
 import java.awt.*;
 import java.io.PrintWriter;
@@ -24,10 +24,10 @@ import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import tv.banko.gamersedition.installer.mod.ModInstaller;
-import tv.banko.gamersedition.installer.util.ArgumentParser;
-import tv.banko.gamersedition.installer.util.InstallerProgress;
-import tv.banko.gamersedition.installer.util.Utils;
+import tv.banko.mcworldrun.installer.mod.ModInstaller;
+import tv.banko.mcworldrun.installer.util.ArgumentParser;
+import tv.banko.mcworldrun.installer.util.InstallerProgress;
+import tv.banko.mcworldrun.installer.util.Utils;
 
 public abstract class Handler implements InstallerProgress {
 	protected static final int HORIZONTAL_SPACING = 4;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer.mod;
+package tv.banko.mcworldrun.installer.mod;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -28,10 +28,10 @@ import java.nio.charset.StandardCharsets;
 
 import javax.swing.*;
 
-import tv.banko.gamersedition.installer.Handler;
-import tv.banko.gamersedition.installer.InstallerGui;
-import tv.banko.gamersedition.installer.util.InstallerProgress;
-import tv.banko.gamersedition.installer.util.Utils;
+import tv.banko.mcworldrun.installer.Handler;
+import tv.banko.mcworldrun.installer.InstallerGui;
+import tv.banko.mcworldrun.installer.util.InstallerProgress;
+import tv.banko.mcworldrun.installer.util.Utils;
 
 public class JavaInstaller {
 

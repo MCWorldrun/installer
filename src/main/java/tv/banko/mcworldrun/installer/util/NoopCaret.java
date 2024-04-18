@@ -14,27 +14,38 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer.util;
+package tv.banko.mcworldrun.installer.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
+import java.awt.event.MouseEvent;
 
-public class CompletableHandler<T> {
-	private boolean complete;
+import javax.swing.text.DefaultCaret;
 
-	private List<Consumer<T>> completeConsumers = new ArrayList<>();
-
-	public void onComplete(Consumer<T> completeConsumer) {
-		completeConsumers.add(completeConsumer);
+// Disables text selection and the caret.
+public class NoopCaret extends DefaultCaret {
+	public NoopCaret() {
+		setBlinkRate(0);
+		super.setSelectionVisible(false);
 	}
 
-	protected void complete(T value) {
-		complete = true;
-		completeConsumers.forEach(listConsumer -> listConsumer.accept(value));
+	@Override
+	public int getDot() {
+		return 0;
 	}
 
-	public boolean isComplete() {
-		return complete;
+	@Override
+	public int getMark() {
+		return 0;
+	}
+
+	@Override
+	public void setSelectionVisible(boolean vis) {
+	}
+
+	@Override
+	protected void positionCaret(MouseEvent e) {
+	}
+
+	@Override
+	protected void moveCaret(MouseEvent e) {
 	}
 }

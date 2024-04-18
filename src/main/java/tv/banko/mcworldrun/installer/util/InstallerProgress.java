@@ -14,38 +14,22 @@
  * limitations under the License.
  */
 
-package tv.banko.gamersedition.installer.util;
+package tv.banko.mcworldrun.installer.util;
 
-import java.awt.event.MouseEvent;
+public interface InstallerProgress {
+	InstallerProgress CONSOLE = new InstallerProgress() {
+		@Override
+		public void updateProgress(String text) {
+			System.out.println(text);
+		}
 
-import javax.swing.text.DefaultCaret;
+		@Override
+		public void error(Throwable throwable) {
+			throw new RuntimeException(throwable);
+		}
+	};
 
-// Disables text selection and the caret.
-public class NoopCaret extends DefaultCaret {
-	public NoopCaret() {
-		setBlinkRate(0);
-		super.setSelectionVisible(false);
-	}
+	void updateProgress(String text);
 
-	@Override
-	public int getDot() {
-		return 0;
-	}
-
-	@Override
-	public int getMark() {
-		return 0;
-	}
-
-	@Override
-	public void setSelectionVisible(boolean vis) {
-	}
-
-	@Override
-	protected void positionCaret(MouseEvent e) {
-	}
-
-	@Override
-	protected void moveCaret(MouseEvent e) {
-	}
+	void error(Throwable throwable);
 }
