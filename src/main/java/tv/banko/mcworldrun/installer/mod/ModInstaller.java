@@ -16,11 +16,17 @@
 
 package tv.banko.mcworldrun.installer.mod;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.gson.JsonObject;
@@ -33,6 +39,8 @@ public class ModInstaller {
 	private static String MOD_VERSION = null;
 	private static String MINECRAFT_VERSION = null;
 	private static String LOADER_VERSION = null;
+
+	public static List<Mod> MODS = new ArrayList<>();
 
 	public static String install(Path mcDir) throws ModInstallationException {
 		Path mods = mcDir.resolve("mods");
@@ -53,9 +61,25 @@ public class ModInstaller {
 			System.out.println("Downloading " + Reference.GAMERS_EDITION_DOWNLOAD + " to " + mod);
 			Utils.downloadFile(new URL(Reference.GAMERS_EDITION_DOWNLOAD), mod);
 
-			Path api = mods.resolve("fabric-api.jar");
-			System.out.println("Downloading " + Reference.FABRIC_API_DOWNLOAD + " to " + api);
-			Utils.downloadFile(new URL(Reference.FABRIC_API_DOWNLOAD), api);
+			Arrays.stream(Mod.values()).filter(Mod::isRequired).forEach(MODS::add);
+
+			for (Mod additionalMod : MODS) {
+				Path modPath = mods.resolve(additionalMod.getFileName() + ".jar");
+				System.out.println("Adding " + additionalMod.getFileName() + " to " + modPath);
+				InputStream stream = ModInstaller.class.getClassLoader()
+						.getResourceAsStream("mod/" + additionalMod.getFileName() + ".jar");
+				FileOutputStream out = new FileOutputStream(modPath.toFile());
+				byte[] buffer = new byte[1024];
+				int length;
+				while (true) {
+                    assert stream != null;
+                    if (!((length = stream.read(buffer)) > 0)) break;
+                    out.write(buffer, 0, length);
+				}
+				out.close();
+				stream.close();
+				System.out.println("Added " + additionalMod.getName());
+			}
 
 			return String.format(Utils.BUNDLE.getString("mod.success"), getModVersion());
 		} catch (IOException e) {
@@ -110,6 +134,43 @@ public class ModInstaller {
 	public static class ModInstallationException extends RuntimeException {
 		public ModInstallationException(String message) {
 			super(message);
+		}
+	}
+
+	public enum Mod {
+		SODIUM("Sodium", true, false),
+		FULLBRIGHT("Fullbright", true, false),
+		FABRIC_API("Fabric-API", true, true);
+
+		private final String name;
+		private final boolean defaultEnabled;
+		private final boolean required;
+
+		Mod(String name, boolean defaultEnabled, boolean required) {
+			this.name = name;
+			this.defaultEnabled = defaultEnabled;
+            this.required = required;
+        }
+
+		public String getName() {
+			return name;
+		}
+
+		public String getFileName() {
+			return name.toLowerCase();
+		}
+
+		public boolean isDefaultEnabled() {
+			return defaultEnabled;
+		}
+
+		public boolean isRequired() {
+			return required;
+		}
+
+		public static List<Mod> getMods() {
+			return Arrays.stream(values()).filter(mod -> !mod.isRequired())
+					.collect(Collectors.toList());
 		}
 	}
 

@@ -19,7 +19,9 @@ package tv.banko.mcworldrun.installer;
 import java.awt.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -40,6 +42,7 @@ public abstract class Handler implements InstallerProgress {
 	public JLabel statusLabel;
 
 	private JPanel pane;
+	private Map<ModInstaller.Mod, JCheckBox> mods = new HashMap<>();
 
 
 	public abstract String name();
@@ -78,12 +81,25 @@ public abstract class Handler implements InstallerProgress {
 
 		addRow(pane, c, "prompt.mod.version", new JLabel(ModInstaller.getModVersion()));
 
+		for (ModInstaller.Mod mod : ModInstaller.Mod.getMods()) {
+			JCheckBox checkBox = new JCheckBox("", mod.isDefaultEnabled());
+			addRow(pane, c, String.format(Utils.BUNDLE.getString("prompt.additional-mod"), mod.getName()), checkBox);
+			this.mods.put(mod, checkBox);
+		}
+
 		addRow(pane, c, null, statusLabel = new JLabel(""));
 
 		addLastRow(pane, c, null,
 				buttonInstall = new JButton(Utils.BUNDLE.getString("prompt.install")));
 		buttonInstall.addActionListener(e -> {
 			buttonInstall.setEnabled(false);
+
+			this.mods.forEach((mod, jCheckBox) -> {
+				if (jCheckBox.isSelected()) {
+					ModInstaller.MODS.add(mod);
+				}
+			});
+
 			install();
 		});
 
@@ -155,7 +171,11 @@ public abstract class Handler implements InstallerProgress {
 			c.anchor = GridBagConstraints.LINE_END;
 			c.fill = GridBagConstraints.NONE;
 			c.weightx = 0;
-			parent.add(new JLabel(Utils.BUNDLE.getString(label)), c);
+			try {
+				parent.add(new JLabel(Utils.BUNDLE.getString(label)), c);
+			} catch (Exception e) {
+				parent.add(new JLabel(label), c);
+			}
 			c.gridx++;
 			c.anchor = GridBagConstraints.LINE_START;
 			c.fill = GridBagConstraints.HORIZONTAL;
