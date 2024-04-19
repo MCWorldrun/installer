@@ -67,7 +67,7 @@ public class ModInstaller {
 				Path modPath = mods.resolve(additionalMod.getFileName() + ".jar");
 				System.out.println("Adding " + additionalMod.getFileName() + " to " + modPath);
 				InputStream stream = ModInstaller.class.getClassLoader()
-						.getResourceAsStream("mod/" + additionalMod.getFileName() + ".jar");
+						.getResourceAsStream("mod/" + additionalMod.getFileName() + ".zip");
 				FileOutputStream out = new FileOutputStream(modPath.toFile());
 				byte[] buffer = new byte[1024];
 				int length;
