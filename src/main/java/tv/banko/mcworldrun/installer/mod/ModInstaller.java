@@ -140,6 +140,8 @@ public class ModInstaller {
 	public enum Mod {
 		SODIUM("Sodium", true, false),
 		FULLBRIGHT("Fullbright", true, false),
+		CONFIGLIB("ConfigLib", true, true),
+		MODMENU("ModMenu", true, true),
 		FABRIC_API("Fabric-API", true, true);
 
 		private final String name;
