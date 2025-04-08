@@ -58,7 +58,7 @@ public class ClientHandler extends Handler {
 	}
 
 	private void doInstall() {
-		String gameVersion = "1.20.4";
+		String gameVersion = "1.21.4";
 		LoaderVersion loaderVersion = queryLoaderVersion();
 		if (loaderVersion == null) return;
 
