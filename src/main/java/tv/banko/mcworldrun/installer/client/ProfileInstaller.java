@@ -73,6 +73,7 @@ public class ProfileInstaller {
 
 		profile.set("name", String.format(Reference.PROFILE_NAME, ModInstaller.getModVersion()));
 		profile.set("icon", Utils.getProfileIcon());
+		profile.set("javaArgs", "-Xmx4G");
 		profile.set("lastVersionId", name);
 
 		Utils.writeToFile(launcherProfiles, jsonObject.toString());
