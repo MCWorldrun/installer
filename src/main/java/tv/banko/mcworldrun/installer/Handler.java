@@ -17,6 +17,9 @@
 package tv.banko.mcworldrun.installer;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URI;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -88,8 +91,8 @@ public abstract class Handler implements InstallerProgress {
 		}
 
 		addRow(pane, c, null, statusLabel = new JLabel(""));
-
-		addLastRow(pane, c, null,
+		
+		addRow(pane, c, null,
 				buttonInstall = new JButton(Utils.BUNDLE.getString("prompt.install")));
 		buttonInstall.addActionListener(e -> {
 			buttonInstall.setEnabled(false);
@@ -102,6 +105,9 @@ public abstract class Handler implements InstallerProgress {
 
 			install();
 		});
+
+		JLabel link = createHyperlinkLabel("Datenschutzerklärung", "https://mcworld.run/datenschutz");
+		addLastRow(pane, c, null, link);
 
 		statusLabel.setText(Utils.BUNDLE.getString("prompt.ready.install"));
 		return pane;
@@ -163,6 +169,22 @@ public abstract class Handler implements InstallerProgress {
 
 	protected static Component createSpacer() {
 		return Box.createRigidArea(new Dimension(4, 0));
+	}
+
+	protected static JLabel createHyperlinkLabel(String text, String url) {
+		JLabel label = new JLabel("<html><a href='" + url + "'>" + text + "</a></html>");
+		label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		label.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					Desktop.getDesktop().browse(new URI(url));
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
+		return label;
 	}
 
 	private void addRow(Container parent, GridBagConstraints c, boolean last, String label, Component... components) {
